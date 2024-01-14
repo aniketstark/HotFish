@@ -5,6 +5,17 @@
 >Kaze no you ni
 >Tsukimihara wo
 >Padoru Padoru
-?[](
+
+How to install🤔Hot🥵phish🐟
+
+For Termux
+1. Open Termux
+
+pkg install -y git && git clone (link) && cd HotPhish && ./install.sh
+
+2. Run compiler py
+python compiler.py
+
+
 
 
