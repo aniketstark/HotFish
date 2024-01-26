@@ -6,6 +6,7 @@
 >Tsukimihara wo
 >Padoru Padoru
 
+⚠️**Root is Required**⚠️
 How to install🤔Hot🥵phish🐟
 
 For Termux
