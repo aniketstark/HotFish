@@ -18,5 +18,10 @@ pkg install -y git && git clone (link) && cd HotPhish && ./install.sh
 python compiler.py
 
 
+As i told you before this tool required root and this tool work as captive portal 
+you can mention your handshake file but only **hashcat handshake file***
+or
+you can use without handshake filwww
 
+No more Update in this repo and other repos because i am dead ⚰️
 
